@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The L.A.M - Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+    <div class="sidebar d-flex flex-column" id="sidebar">
+        <a href="#" class="sidebar-brand" id="sidebarStoreName">The L.A.M<span style="color: var(--accent-color);">.</span> ADMIN</a>
+        <nav class="nav flex-column flex-grow-1">
+            <a class="nav-link active" onclick="showSection('dashboard')"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
+            <a class="nav-link" onclick="showSection('products')"><i class="fa-solid fa-box-open"></i> Products</a>
+            <a class="nav-link" onclick="showSection('orders')"><i class="fa-solid fa-cart-shopping"></i> Orders</a>
+            <a class="nav-link" onclick="showSection('analytics')"><i class="fa-solid fa-chart-line"></i> Analytics</a>
+        </nav>
+        <div class="mt-auto">
+            <a href="javascript:void(0)" class="nav-link text-warning mb-2" onclick="safeRedirect('main.html')"><i class="fa-solid fa-store"></i> View Shop</a>
+            <a href="javascript:void(0)" class="nav-link text-danger" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Log Out</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <header class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="m-0" id="page-title">Dashboard Overview</h3>
+            <div class="d-flex align-items-center gap-3">
+                <div class="d-flex align-items-center gap-2" style="cursor: pointer;" onclick="openStoreModal()">
+                    <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center text-white" style="width: 35px; height: 35px;">A</div>
+                    <span class="fw-bold d-none d-sm-block" id="headerUserName">Administrator</span>
+                </div>
+            </div>
+        </header>
+
+        <div id="dashboard-section" class="content-section active fade-in">
+            <div class="row g-4 mb-4">
+                <div class="col-md-3 col-sm-6"><div class="stat-card"><div class="icon-box bg-purple-light"><i class="fa-solid fa-sack-dollar"></i></div><h6 class="text-muted mb-1">Revenue (Ledger)</h6><h4 class="mb-0" id="dashRevenue">$0</h4><small class="text-success">Stable Data</small></div></div>
+                <div class="col-md-3 col-sm-6"><div class="stat-card"><div class="icon-box bg-blue-light"><i class="fa-solid fa-cart-shopping"></i></div><h6 class="text-muted mb-1">Pending Orders</h6><h4 class="mb-0" id="dashPending">0</h4><small class="text-warning">Needs Action</small></div></div>
+                <div class="col-md-3 col-sm-6"><div class="stat-card"><div class="icon-box bg-orange-light"><i class="fa-solid fa-box"></i></div><h6 class="text-muted mb-1">Products</h6><h4 class="mb-0" id="dashProducts">0</h4><small class="text-muted">In Stock</small></div></div>
+                <div class="col-md-3 col-sm-6"><div class="stat-card"><div class="icon-box bg-green-light"><i class="fa-solid fa-user-group"></i></div><h6 class="text-muted mb-1">Customers</h6><h4 class="mb-0" id="dashCustomers">0</h4><small class="text-success">Registered</small></div></div>
+            </div>
+             <div class="row mt-4">
+                <div class="col-12">
+                    <div class="stat-card">
+                        <h5 class="mb-3">Top Selling Products (Completed Orders)</h5>
+                        <ul class="list-group list-group-flush" id="topSellingList"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="products-section" class="content-section">
+            <div class="d-flex justify-content-between mb-3">
+                <input type="text" id="prodSearch" class="form-control w-25" placeholder="Search products..." onkeyup="searchAdminProducts()">
+                <button class="btn btn-primary" onclick="openProductModal('add')"><i class="fa-solid fa-plus"></i> Add Product</button>
+            </div>
+            <div class="table-responsive table-custom p-3">
+                <table class="table table-hover align-middle">
+                    <thead><tr><th>ID</th><th>Image</th><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Action</th></tr></thead>
+                    <tbody id="productsTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="orders-section" class="content-section">
+            <div class="d-flex justify-content-between align-items-center mb-3"><h4 class="m-0">Order Management</h4></div>
+            <div class="table-responsive table-custom p-3">
+                <table class="table table-hover align-middle mb-0">
+                    <thead><tr><th>ID</th><th>Customer</th><th>Address</th><th class="col-items">Items</th><th>Total</th><th>Status</th><th class="col-action">Action</th></tr></thead>
+                    <tbody id="ordersTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="analytics-section" class="content-section">
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="stat-card">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h5 class="mb-0">Revenue Overview</h5>
+                            <div class="d-flex gap-2">
+                                <select class="form-select form-select-sm" style="width: 100px;" id="yearSelect" onchange="initCharts()">
+                                    <option value="2025" selected>2025</option>
+                                    <option value="2024">2024</option>
+                                </select>
+                                <div class="input-group input-group-sm">
+                                    <select class="form-select" id="exportType">
+                                        <option value="print">Print</option>
+                                        <option value="word">Word</option>
+                                    </select>
+                                    <button class="btn btn-outline-secondary" onclick="handleExport()">Export</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-container"><canvas id="revenueChart"></canvas></div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="stat-card">
+                        <h5 class="mb-4">Category Breakdown (Sales)</h5>
+                        <div class="chart-container" style="height: 300px;"><canvas id="categoryChart"></canvas></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="storeModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Settings</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body">
+        <div class="mb-3"><label>Store Name (Brand)</label><input type="text" class="form-control" id="editStoreName"></div>
+        <div class="mb-3"><label>User Name (Display)</label><input type="text" class="form-control" id="editUserName"></div>
+    </div><div class="modal-footer"><button class="btn btn-primary" onclick="saveStoreSettings()">Save Changes</button></div></div></div></div>
+
+    <div class="modal fade" id="productModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="prodModalTitle">Product</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body">
+        <input type="hidden" id="prodId">
+        
+        <div class="mb-3">
+            <label class="form-label d-block">Product Image Source</label>
+            <div class="btn-group w-100 mb-2" role="group">
+                <input type="radio" class="btn-check" name="imgSource" id="sourceUrl" autocomplete="off" checked onchange="toggleImgInput('url')">
+                <label class="btn btn-outline-secondary" for="sourceUrl"><i class="fa-solid fa-link"></i> Image URL</label>
+
+                <input type="radio" class="btn-check" name="imgSource" id="sourceFile" autocomplete="off" onchange="toggleImgInput('file')">
+                <label class="btn btn-outline-secondary" for="sourceFile"><i class="fa-solid fa-upload"></i> Upload File</label>
+            </div>
+
+            <div id="urlInputGroup">
+                <input type="text" class="form-control" id="prodImgURL" placeholder="https://example.com/image.jpg" onchange="previewUrlImage()">
+                <div class="form-text">Paste a direct image link (Recommended to save storage).</div>
+            </div>
+
+            <div id="fileInputGroup" style="display:none">
+                <input type="file" class="form-control" id="prodImgInput" accept="image/*" onchange="handleImageUpload()">
+                <div class="form-text text-warning"><i class="fa-solid fa-triangle-exclamation"></i> Warning: Large files (>1MB) may slow down the app.</div>
+            </div>
+
+            <div class="img-preview-container mt-2">
+                <img id="prodImgPreview" src="" style="display: none;">
+                <span class="img-preview-text" id="prodImgPlaceholder">No image selected</span>
+            </div>
+            
+            <input type="hidden" id="prodImgData"> 
+        </div>
+        <div class="mb-2"><label>Name</label><input type="text" class="form-control" id="prodName"></div>
+        <div class="row mb-2">
+            <div class="col"><label>Category</label><select class="form-select" id="prodCat"><option value="men">Men</option><option value="women">Women</option></select></div>
+            <div class="col"><label>Price</label><input type="number" class="form-control" id="prodPrice"></div>
+        </div>
+        <div class="mb-2"><label>Quantity (Stock)</label><input type="number" class="form-control" id="prodQty" min="0" value="10"></div>
+        <div class="mb-2"><label>Description</label><textarea class="form-control" id="prodDesc"></textarea></div>
+    </div><div class="modal-footer"><button class="btn btn-primary" onclick="saveProduct()">Save</button></div></div></div></div>
+
+    <div class="modal fade" id="orderDetailModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Order Details</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body" id="orderDetailContent"></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button></div></div></div></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>

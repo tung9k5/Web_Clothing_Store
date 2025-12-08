@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The L.A.M - Premium Fashion</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">The L.A.M<span style="color: var(--accent-color);">.</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link active" href="#" onclick="resetHome()">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#shop" onclick="resetFilters()">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#collections">Collections</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#blog">Events</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                    <li class="nav-item d-none" id="adminLink"><a class="nav-link admin-link" href="javascript:void(0)" onclick="safeRedirect('admin.html')"><i class="fa-solid fa-store me-1"></i> Manage Store</a></li>
+                </ul>
+            </div>
+            <div class="d-flex align-items-center gap-3 position-relative">
+                <a href="javascript:void(0)" class="text-dark fs-5" onclick="toggleSearch()"><i class="fa-solid fa-magnifying-glass"></i></a>
+                <div class="search-container" id="searchContainer">
+                    <div class="input-group mb-2"><input type="text" id="searchInput" class="form-control rounded-0" placeholder="Search products..." onkeyup="searchProducts()"><button class="btn btn-outline-secondary rounded-0" type="button" onclick="searchProducts()"><i class="fa-solid fa-magnifying-glass"></i></button></div>
+                </div>
+                <a href="javascript:void(0)" class="text-dark fs-5 position-relative" onclick="openWishlistModal()"><i class="fa-regular fa-heart"></i><span class="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-wishlist" id="wishlist-count" style="display: none;">0</span></a>
+                <a href="javascript:void(0)" class="text-dark fs-5 position-relative" onclick="openCartDisplay()"><i class="fa-solid fa-bag-shopping"></i><span class="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-cart" id="cart-count">0</span></a>
+                <a href="javascript:void(0)" class="text-dark fs-5 border border-dark rounded-circle d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;" onclick="handleUserIconClick()"><i class="fa-regular fa-user" style="font-size: 1rem;"></i></a>
+            </div>
+        </div>
+    </nav>
+
+    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators"><button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button><button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button></div>
+        <div class="carousel-inner">
+            <div class="carousel-item active"><img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2070" class="d-block w-100"><div class="carousel-caption"><div class="container"><div class="row"><div class="col-lg-7"><p class="hero-subtitle text-white">SUMMER COLLECTION 2025</p><h1 class="hero-title text-white mb-4">New Minimalist <br>Style</h1></div></div></div></div></div>
+            <div class="carousel-item"><img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070" class="d-block w-100"><div class="carousel-caption"><div class="container"><div class="row"><div class="col-lg-7"><p class="hero-subtitle text-white">LATEST TRENDS</p><h1 class="hero-title text-white mb-4">Elegant <br>& Attractive</h1></div></div></div></div></div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev"><span class="carousel-control-prev-icon"></span></button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next"><span class="carousel-control-next-icon"></span></button>
+    </div>
+
+    <section class="py-5 bg-light" id="collections">
+        <div class="container">
+            <div class="text-center mb-5"><h2 class="mb-2" style="font-family: 'Playfair Display', serif;">Collections</h2><p class="text-muted">Discover your unique style</p></div>
+            <div class="row g-4">
+                <div class="col-md-6"><div class="collection-card-wrap" onclick="viewCollection('women')"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964"><div class="overlay-gradient"></div><div class="position-absolute top-50 start-50 translate-middle text-center text-white w-100 p-4"><p class="text-uppercase letter-spacing-3 mb-3 small fw-light">Graceful & Elegant</p><h2 class="display-5 fw-bold mb-4">Women's Fashion</h2><button class="btn btn-lg rounded-0 px-5 py-2 btn-discover">VIEW NOW</button></div></div></div>
+                <div class="col-md-6"><div class="collection-card-wrap" onclick="viewCollection('men')"><img src="https://images.unsplash.com/photo-1516257984-b1b4d8c9230c?q=80&w=1887"><div class="overlay-gradient"></div><div class="position-absolute top-50 start-50 translate-middle text-center text-white w-100 p-4"><p class="text-uppercase letter-spacing-3 mb-3 small fw-light">Strong & Attractive</p><h2 class="display-5 fw-bold mb-4">Men's Fashion</h2><button class="btn btn-lg rounded-0 px-5 py-2 btn-discover">VIEW NOW</button></div></div></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5" id="shop">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="mb-2" id="shop-title">All Products</h2>
+                <p class="text-muted" id="shop-desc">Explore our exclusive collection</p>
+                <button class="btn btn-sm btn-outline-secondary mt-3 d-none" id="btn-back-all" onclick="resetFilters()">Back to All Products</button>
+            </div>
+            <div class="row" id="product-list"></div>
+            <nav aria-label="Page navigation" class="mt-5"><ul class="pagination justify-content-center" id="pagination-controls"></ul></nav>
+        </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <section id="blog" class="py-5">
+        <div class="container-fluid p-0">
+            <div class="position-relative" style="height: 400px;"><img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=2070" class="w-100 h-100 object-fit-cover" style="filter: brightness(0.7);"><div class="position-absolute top-50 start-50 translate-middle text-center text-white w-75"><span class="badge bg-danger rounded-0 mb-3 px-3 py-2 text-uppercase letter-spacing-3">Exclusive Event</span><h2 class="display-4 fw-bold mb-3">SUMMER FLASH SALE</h2><p class="lead mb-4 d-none d-md-block" style="letter-spacing: 1px;">CHANCE TO OWN THE NEW COLLECTION WITH UP TO 50% OFF</p><div class="countdown-wrap"><div class="countdown-item rounded"><span class="countdown-number" id="days">00</span><span class="countdown-label">Days</span></div><div class="countdown-item rounded"><span class="countdown-number" id="hours">00</span><span class="countdown-label">Hours</span></div><div class="countdown-item rounded"><span class="countdown-number" id="minutes">00</span><span class="countdown-label">Mins</span></div><div class="countdown-item rounded"><span class="countdown-number" id="seconds">00</span><span class="countdown-label">Secs</span></div></div></div></div>
+        </div>
+    </section>
+
+    <section class="py-5">
+        <div class="container"><div class="row"><div class="col-md-3 col-6"><div class="feature-box"><i class="fa-solid fa-truck-fast feature-icon"></i><h5>Free Shipping</h5><p class="small text-muted mb-0">For orders > $50</p></div></div><div class="col-md-3 col-6"><div class="feature-box"><i class="fa-solid fa-rotate-left feature-icon"></i><h5>30-Day Return</h5><p class="small text-muted mb-0">100% Money Back</p></div></div><div class="col-md-3 col-6"><div class="feature-box"><i class="fa-solid fa-headset feature-icon"></i><h5>24/7 Support</h5><p class="small text-muted mb-0">Always available</p></div></div><div class="col-md-3 col-6"><div class="feature-box"><i class="fa-solid fa-shield-halved feature-icon"></i><h5>Secure Payment</h5><p class="small text-muted mb-0">Absolute Security</p></div></div></div></div>
+    </section>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="row pb-5 border-bottom border-secondary">
+                <div class="col-lg-3 col-md-6 mb-4"><h5 class="text-white mb-4">The L.A.M<span style="color: var(--accent-color);">.</span></h5><p class="small">We bring the latest fashion trends.</p><div class="social-links mt-4"><a href="#"><i class="fa-brands fa-facebook-f"></i></a><a href="#"><i class="fa-brands fa-instagram"></i></a><a href="#"><i class="fa-brands fa-twitter"></i></a></div></div>
+                <div class="col-lg-3 col-md-6 mb-4"><h6 class="footer-heading">Store</h6><ul class="list-unstyled footer-links"><li><a href="#">Men</a></li><li><a href="#">Women</a></li></ul></div>
+                <div class="col-lg-3 col-md-6 mb-4"><h6 class="footer-heading">Support</h6><ul class="list-unstyled footer-links"><li><a href="#">Contact Us</a></li><li><a href="#">FAQ</a></li><li><a href="#">Shipping & Returns</a></li></ul></div>
+                <div class="col-lg-3 col-md-6 mb-4"><h6 class="footer-heading">Newsletter</h6><p class="small">Get info about new products.</p><form class="mt-3"><div class="input-group"><input type="email" class="form-control newsletter-input" placeholder="Your Email"><button class="btn btn-light rounded-0" type="button">Send</button></div></form></div>
+            </div>
+            <div class="py-4 text-center"><p class="small mb-0">&copy; 2024 The L.A.M Fashion. All rights reserved.</p></div>
+        </div>
+    </footer>
+
+    <div class="modal fade" id="addToCartModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered modal-lg"><div class="modal-content rounded-0 border-0"><div class="modal-header border-0"><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body pb-5 px-4"><div class="row"><div class="col-md-6"><img id="cartModalImg" src="" class="img-fluid w-100 object-fit-cover" style="height: 400px;"></div><div class="col-md-6"><h3 id="cartModalTitle" class="mb-2 fw-bold"></h3><p id="cartModalPrice" class="h4 text-danger mb-2 fw-bold"></p><p class="text-muted small mb-4" id="cartModalDesc"></p><div class="mb-4"><label class="form-label small fw-bold text-muted">SIZE</label><div class="btn-group w-100"><input type="radio" class="btn-check" name="cartSize" id="s1" checked><label class="btn btn-outline-dark rounded-0" for="s1">S</label><input type="radio" class="btn-check" name="cartSize" id="s2"><label class="btn btn-outline-dark rounded-0" for="s2">M</label><input type="radio" class="btn-check" name="cartSize" id="s3"><label class="btn btn-outline-dark rounded-0" for="s3">L</label></div></div><div class="mb-4"><label class="form-label small fw-bold text-muted">QUANTITY</label><input type="number" class="form-control rounded-0 w-25" value="1" min="1" id="cartModalQty"></div><button class="btn btn-dark w-100 rounded-0 py-3 text-uppercase fw-bold" id="btnConfirmAddToCart">Add to Cart</button></div></div></div></div></div></div>
+    <div class="modal fade" id="productDetailModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered modal-xl"><div class="modal-content"><div class="modal-header border-0"><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body pb-5 px-4"><div class="row"><div class="col-md-7"><img id="detailImg" src="" class="w-100 object-fit-cover" style="height: 500px;"></div><div class="col-md-5"><h2 id="detailTitle" class="mb-3"></h2><h4 id="detailPrice" class="text-danger mb-4 fw-bold"></h4><p class="text-muted" id="detailDesc">Description here...</p><hr class="my-4"><div class="mb-3"><strong class="d-block mb-2">Highlights:</strong><ul class="text-muted small"><li>Material: 100% Cotton Premium</li><li>Fit: Regular Fit</li></ul></div><button class="btn btn-dark w-100 rounded-0 py-3 mt-3 text-uppercase fw-bold" id="btnDetailAddToCart">Add to Cart</button></div></div></div></div></div></div>
+    <div class="modal fade" id="cartModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered modal-lg"><div class="modal-content rounded-0"><div class="modal-header border-bottom-0"><h5 class="modal-title fw-bold">Your Shopping Cart</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body px-4" id="cartModalBody"></div><div class="modal-footer border-top-0 d-flex justify-content-between px-4 pb-4"><div><span class="text-muted small">Total:</span><h4 class="mb-0" id="cartTotal">$0</h4></div><button class="btn btn-dark rounded-0 px-5 py-2" onclick="proceedToCheckout('cart')">Checkout</button></div></div></div></div>
+    <div class="modal fade" id="checkoutModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered modal-lg"><div class="modal-content rounded-0"><div class="modal-header bg-light border-0"><h5 class="modal-title fw-bold">CHECKOUT</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body p-4"><div class="row"><div class="col-md-7 border-end"><h6 class="mb-3 fw-bold">Shipping Information</h6><form id="checkoutForm"><div class="mb-3"><label class="form-label small">Full Name</label><input type="text" class="form-control rounded-0" id="chkName"></div><div class="mb-3"><label class="form-label small">Phone Number</label><input type="tel" class="form-control rounded-0" id="chkPhone"></div><div class="mb-3"><label class="form-label small">Address</label><textarea class="form-control rounded-0" rows="2" id="chkAddress"></textarea></div><div class="mb-3"><label class="form-label small">Payment Method</label><select class="form-select rounded-0" id="chkPayment"><option value="COD">Cash on Delivery (COD)</option><option value="Banking">Bank Transfer</option></select></div></form></div><div class="col-md-5 ps-md-4"><h6 class="mb-3 fw-bold">Your Order</h6><div id="checkoutItemsList" class="mb-3" style="max-height: 200px; overflow-y: auto;"></div><div class="checkout-total"><span>Total Payment:</span><span class="text-danger" id="checkoutTotalAmount">$0</span></div><button class="btn btn-dark w-100 rounded-0 mt-4 py-3 fw-bold" onclick="finalPlaceOrder()">ORDER NOW</button></div></div></div></div></div></div>
+    <div class="modal fade" id="wishlistModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered modal-lg"><div class="modal-content"><div class="modal-header border-bottom-0"><h5 class="modal-title fw-bold">My Wishlist</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body px-4" id="wishlistModalBody"></div></div></div></div>
+    
+    <div class="modal fade" id="loginRequireModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content rounded-0"><div class="modal-header border-0"><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="auth-card"><div class="text-center mb-4"><h3 class="fw-bold">The L.A.M Account</h3></div><div id="signInForm" class="form-section"><h4 class="text-center mb-4">Welcome Back!</h4><input type="email" id="loginEmail" class="form-control mb-3" placeholder="Email Address"><input type="password" id="loginPassword" class="form-control mb-3" placeholder="Password"><div class="d-flex justify-content-between small mb-3"><span class="switch-link" onclick="showForm('signup')">Create Account</span><span class="switch-link text-muted" onclick="showForm('forgot')">Forgot Password?</span></div><button type="button" class="btn-submit mb-4" onclick="signIn()">Sign In</button></div><div id="signUpForm" class="form-section d-none"><h4 class="text-center mb-4">Create Account</h4><input type="text" id="regName" class="form-control mb-3" placeholder="Full Name"><input type="email" id="regEmail" class="form-control mb-3" placeholder="Email Address"><input type="password" id="regPass" class="form-control mb-3" placeholder="Password"><div class="mb-3 text-center small"><span class="switch-link" onclick="showForm('login')">Already have an account? Sign In</span></div><button type="button" class="btn-submit mb-4" onclick="signUp()">Sign Up</button></div><div id="forgotForm" class="form-section d-none"><h4 class="text-center mb-4">Reset Password</h4><p class="text-center small text-muted mb-3">Enter your email to reset password</p><input type="email" id="resetEmail" class="form-control mb-3" placeholder="Email Address"><div class="mb-3 text-center small"><span class="switch-link" onclick="showForm('login')">Back to Sign In</span></div><button type="button" class="btn-submit mb-4" onclick="alert('Link sent!')">Send Link</button></div></div></div></div></div></div>
+    
+    <div class="modal fade" id="userProfileModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content border-0 rounded-0"><div class="modal-header border-0 bg-light"><h5 class="modal-title fw-bold">Personal Information</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body p-4"><div class="text-center mb-4"><div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;"><i class="fa-solid fa-user fa-2x text-secondary"></i></div><h5 class="mt-3 mb-1" id="profileName"></h5><p class="text-muted small" id="profileEmail"></p></div><div class="d-grid mt-4"><button class="btn btn-outline-danger rounded-0" onclick="logout()">Logout</button></div></div></div></div></div>
+    
+    <div class="toast-container position-fixed bottom-0 end-0 p-3"><div id="cartToast" class="toast align-items-center text-bg-dark border-0" role="alert" aria-live="assertive" aria-atomic="true"><div class="d-flex"><div class="toast-body"><i class="fa-solid fa-check-circle text-success me-2"></i> <span id="toastMessage">Success</span></div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div></div></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script src="main.js"></script>
+</body>
+</html>
